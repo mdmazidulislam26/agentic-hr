@@ -1,6 +1,6 @@
 # 🤖 Autonomous Agentic HR & Recruitment Microservices Ecosystem
 
-[![CI/CD Pipeline](https://github.com/mdmazidulislam26/agentic-hr-platform/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/mdmazidulislam26/agentic-hr-platform/actions)
+[![CI/CD Pipeline](https://github.com/mdmazidulislam26/agentic-hr/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/mdmazidulislam26/agentic-hr/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/NestJS-v10-red.svg)](https://nestjs.com/)
 [![Python](https://img.shields.io/badge/FastAPI-v0.110-009688.svg)](https://fastapi.tiangolo.com/)
