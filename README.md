@@ -1,4 +1,3 @@
-```markdown
 # 🤖 Autonomous Agentic HR & Recruitment Microservices Ecosystem
 
 [![CI/CD Pipeline](https://github.com/your-username/agentic-hr-platform/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/your-username/agentic-hr-platform/actions)
@@ -40,7 +39,6 @@ An enterprise-grade, event-driven recruiting platform engineered with **NestJS**
 
 ## 🏗️ System Architecture (HLD)
 
-```
                               [ Client Browser: Next.js 14 ]
                                              │
                                              │ (HTTPS / WebSockets)
@@ -66,13 +64,10 @@ An enterprise-grade, event-driven recruiting platform engineered with **NestJS**
               ┌──────────────┴──────────────┐
               ▼                             ▼
    [ PostgreSQL (Neon.tech) ]     [ Resend Transactional Email ]
-```
 
 ---
 
 ## 🔄 Candidate Lifecycle State Machine
-
-```
 [Candidate Submits Form & CV]
                │
                ▼
@@ -101,8 +96,7 @@ An enterprise-grade, event-driven recruiting platform engineered with **NestJS**
                          │
                          ▼ (Post-Recruitment Authorization)
                   [ALL_DATA_PURGED] (Zero Footprint)
-```
-
+                  
 ---
 
 ## 📦 Microservices Decomposition
