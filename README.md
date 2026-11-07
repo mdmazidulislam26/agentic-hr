@@ -13,6 +13,7 @@ An enterprise-grade, event-driven recruiting platform engineered with **NestJS**
 ---
 
 ## 📑 Table of Contents
+
 - [Key Architectural Highlights](#-key-architectural-highlights)
 - [System Architecture (HLD)](#-system-architecture-hld)
 - [Candidate Lifecycle State Machine](#-candidate-lifecycle-state-machine)
@@ -39,6 +40,7 @@ An enterprise-grade, event-driven recruiting platform engineered with **NestJS**
 
 ## 🏗️ System Architecture (HLD)
 
+```text
                               [ Client Browser: Next.js 14 ]
                                              │
                                              │ (HTTPS / WebSockets)
@@ -64,10 +66,13 @@ An enterprise-grade, event-driven recruiting platform engineered with **NestJS**
               ┌──────────────┴──────────────┐
               ▼                             ▼
    [ PostgreSQL (Neon.tech) ]     [ Resend Transactional Email ]
+```
 
 ---
 
 ## 🔄 Candidate Lifecycle State Machine
+
+```text
 [Candidate Submits Form & CV]
                │
                ▼
@@ -96,20 +101,21 @@ An enterprise-grade, event-driven recruiting platform engineered with **NestJS**
                          │
                          ▼ (Post-Recruitment Authorization)
                   [ALL_DATA_PURGED] (Zero Footprint)
-                  
+```
+
 ---
 
 ## 📦 Microservices Decomposition
 
-| Microservice | Port | Framework | Primary Responsibility |
-| :--- | :--- | :--- | :--- |
-| **`api-gateway`** | `80` | Nginx | Reverse proxy, path routing, and WebSocket connection upgrade handling. |
-| **`job-auth-service`** | `8001` | NestJS / Prisma | HR authentication, RBAC, Job management, and cascading delete actions. |
-| **`ats-screening-service`** | `8002` | FastAPI / Python | In-memory PDF text extraction and semantic resume matching via Groq Llama-3.3. |
-| **`assessment-service`** | `8003` | FastAPI / Python | Dynamic multi-set question generator, timed exam portal, and automated grading. |
-| **`ai-interview-service`** | `8004` | FastAPI / WebSockets | Live webcam session, Groq Whisper-v3 Speech-to-Text, and AI Judge scoring. |
-| **`notification-worker`** | `8005` | NestJS / BullMQ | Deadline watcher (Cron), cutoff optimization agent, and Resend transactional email queue. |
-| **`web-frontend`** | `3000` | Next.js 14 (App Router) | Responsive candidate career portal and HR analytics leaderboard. |
+| Microservice                | Port   | Framework               | Primary Responsibility                                                                    |
+| :-------------------------- | :----- | :---------------------- | :---------------------------------------------------------------------------------------- |
+| **`api-gateway`**           | `80`   | Nginx                   | Reverse proxy, path routing, and WebSocket connection upgrade handling.                   |
+| **`job-auth-service`**      | `8001` | NestJS / Prisma         | HR authentication, RBAC, Job management, and cascading delete actions.                    |
+| **`ats-screening-service`** | `8002` | FastAPI / Python        | In-memory PDF text extraction and semantic resume matching via Groq Llama-3.3.            |
+| **`assessment-service`**    | `8003` | FastAPI / Python        | Dynamic multi-set question generator, timed exam portal, and automated grading.           |
+| **`ai-interview-service`**  | `8004` | FastAPI / WebSockets    | Live webcam session, Groq Whisper-v3 Speech-to-Text, and AI Judge scoring.                |
+| **`notification-worker`**   | `8005` | NestJS / BullMQ         | Deadline watcher (Cron), cutoff optimization agent, and Resend transactional email queue. |
+| **`web-frontend`**          | `3000` | Next.js 14 (App Router) | Responsive candidate career portal and HR analytics leaderboard.                          |
 
 ---
 
@@ -171,17 +177,22 @@ agentic-hr-platform/
 ## 🚀 Quickstart with Docker Compose
 
 ### Prerequisites
+
 - [Docker](https://docs.docker.com/get-docker/) & Docker Compose installed.
 - Free API keys from [Groq Console](https://console.groq.com) and [Resend](https://resend.com).
 
 ### 1. Clone & Configure
+
 ```bash
 git clone https://github.com/your-username/agentic-hr-platform.git
 cd agentic-hr-platform
 cp .env.example .env
 ```
 
+### 🔧 Environment Variables Guide
+
 Edit `.env` with your credentials:
+
 ```env
 DATABASE_URL="postgresql://hr_admin:hr_secure_password@postgres-db:5432/agentic_hr_db?schema=public"
 REDIS_HOST="redis-broker"
@@ -192,11 +203,13 @@ RESEND_API_KEY="re_your_resend_api_key_here"
 ```
 
 ### 2. Launch the Microservices Ecosystem
+
 ```bash
 docker compose up --build
 ```
 
 ### 3. Verify System Endpoints
+
 - **Web Frontend Application:** `http://localhost`
 - **Nginx Unified Gateway:** `http://localhost/api/v1`
 - **PostgreSQL Database:** `localhost:5432`
@@ -207,6 +220,7 @@ docker compose up --build
 ## 🔐 Zero-Junk Retention & GDPR Cascading Purge
 
 To prevent cloud database bloat on free serverless plans:
+
 1. **In-Memory Rejection:** Applicants matching below threshold criteria are immediately served an evaluation summary and dropped in memory. No persistent database record is created.
 2. **Intermediate Pruning:** Applicants failing assessment tests or missing the scheduled window are cleared using batch queries.
 3. **Cascading Post Purge:** Once hiring completes, the HR Recruiter invokes the purge endpoint with explicit verification token `PURGE_ALL_DATA_<jobId>`. The database triggers `ON DELETE CASCADE` across all child entities:
@@ -217,6 +231,7 @@ ADD CONSTRAINT "fk_job_cascade"
 FOREIGN KEY ("jobId") REFERENCES "JobPost"("id")
 ON DELETE CASCADE;
 ```
+
 This wipes all candidate profiles, CV extractions, exam submissions, audio transcripts, and AI judge reports in a single atomic transaction.
 
 ---
@@ -224,22 +239,27 @@ This wipes all candidate profiles, CV extractions, exam submissions, audio trans
 ## 📡 API Reference
 
 ### ATS Resume Screening
+
 - `POST /api/v1/ats/evaluate`
   - Upload `multipart/form-data` containing candidate details and PDF resume.
   - Returns instant JSON evaluation with semantic match score and missing skill breakdown.
 
 ### Job Management & Cutoff
+
 - `POST /api/v1/jobs` — Create new job requisition with attitude round flags.
 - `POST /api/v1/jobs/:jobId/apply-cutoff` — Approve AI-predicted $X\%$ or apply manual $Y\%$ cutoff filter.
 
 ### Assessment Portal
+
 - `POST /api/v1/assessments/generate/:configId` — Generate customized multi-set dynamic quiz.
 - `POST /api/v1/assessments/submit` — Submit answers for instant grading.
 
 ### AI Live Interview
+
 - `WS /api/v1/interviews/session/:candidateId` — Bi-directional WebSocket stream for real-time video interview questioning, audio transcription via Whisper, and automated scorecard generation.
 
 ### Selection & Purge
+
 - `GET /api/v1/jobs/:jobId/leaderboard` — Access candidate evaluations sorted by overall score.
 - `POST /api/v1/jobs/:jobId/select-f2f` — Dispatch invitations to selected finalists.
 - `DELETE /api/v1/jobs/:jobId/purge-all` — Irreversibly wipe all telemetry and candidate records.
@@ -249,4 +269,3 @@ This wipes all candidate profiles, CV extractions, exam submissions, audio trans
 ## 📄 License
 
 Distributed under the MIT License. Designed and engineered for enterprise recruitment automation showcase.
-```
