@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autonomous Agentic HR Ecosystem | Enterprise System Architecture Showcase</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              900: '#312e81',
+              950: '#030712',
+            }
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'laser': 'laser 2s linear infinite',
+          },
+          keyframes: {
+            laser: {
+              '0%': { top: '0%' },
+              '50%': { top: '90%' },
+              '100%': { top: '0%' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-card {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-glow {
+      box-shadow: 0 0 50px -10px rgba(99, 102, 241, 0.2);
+    }
+    .neon-border:hover {
+      border-color: rgba(99, 102, 241, 0.5);
+      box-shadow: 0 0 25px rgba(99, 102, 241, 0.3);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+
+  <!-- Background Gradients -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl"></div>
+    <div class="absolute top-1/3 -right-40 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-10 left-1/3 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass-card border-b border-slate-800/80 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+          <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+        </div>
+        <span class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-indigo-400 bg-clip-text text-transparent">
+          Agentic HR Ecosystem
+        </span>
+      </div>
+
+      <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+        <a href="#architecture" class="hover:text-indigo-400 transition">Architecture (HLD)</a>
+        <a href="#pipeline" class="hover:text-indigo-400 transition">Interactive Pipeline</a>
+        <a href="#engineering" class="hover:text-indigo-400 transition">System Design</a>
+        <a href="#tech-stack" class="hover:text-indigo-400 transition">Tech Matrix</a>
+      </div>
+
+      <a href="https://github.com/mdmazidulislam26/agentic-hr-test" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-700 hover:border-indigo-500 text-xs font-semibold text-white transition shadow-sm">
+        <i data-lucide="github" class="w-4 h-4"></i>
+        <span>View Source Code</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative z-10 pt-36 pb-20 px-6 max-w-7xl mx-auto text-center">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-950/80 border border-indigo-700/60 text-xs font-semibold text-indigo-300 mb-6 shadow-inner">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      <span>Enterprise Distributed Microservices & Multimodal AI Architecture</span>
+    </div>
+
+    <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight max-w-5xl mx-auto">
+      Autonomous <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Agentic HR</span> Platform
+    </h1>
+
+    <p class="mt-6 text-base md:text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed">
+      A production-grade recruiting ecosystem orchestrating sub-second semantic ATS resume parsing, anti-cheat timed assessments, real-time AI voice/video interviews, and executive appointment dispatching.
+    </p>
+
+    <!-- Metrics Badges -->
+    <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+      <div class="glass-card p-5 rounded-2xl text-center border-slate-800">
+        <div class="text-3xl font-extrabold text-indigo-400 font-mono">5+</div>
+        <div class="text-xs text-slate-400 mt-1 uppercase font-semibold">Microservices</div>
+      </div>
+      <div class="glass-card p-5 rounded-2xl text-center border-slate-800">
+        <div class="text-3xl font-extrabold text-emerald-400 font-mono">&lt; 1.2s</div>
+        <div class="text-xs text-slate-400 mt-1 uppercase font-semibold">In-Memory ATS</div>
+      </div>
+      <div class="glass-card p-5 rounded-2xl text-center border-slate-800">
+        <div class="text-3xl font-extrabold text-purple-400 font-mono">100%</div>
+        <div class="text-xs text-slate-400 mt-1 uppercase font-semibold">Real-Time Voice AI</div>
+      </div>
+      <div class="glass-card p-5 rounded-2xl text-center border-slate-800">
+        <div class="text-3xl font-extrabold text-pink-400 font-mono">Zero</div>
+        <div class="text-xs text-slate-400 mt-1 uppercase font-semibold">Junk Data Storage</div>
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-wrap justify-center gap-4">
+      <a href="#pipeline" class="px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition shadow-lg shadow-indigo-600/30 flex items-center gap-2">
+        <i data-lucide="play" class="w-4 h-4 fill-white"></i>
+        <span>Try Interactive Simulation</span>
+      </a>
+      <a href="#architecture" class="px-6 py-3.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-slate-500 text-slate-200 font-semibold text-sm transition flex items-center gap-2">
+        <i data-lucide="cpu" class="w-4 h-4"></i>
+        <span>View System HLD</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Interactive Architecture (HLD) -->
+  <section id="architecture" class="relative z-10 py-20 px-6 max-w-7xl mx-auto border-t border-slate-900">
+    <div class="text-center space-y-2 mb-12">
+      <span class="text-xs uppercase font-extrabold text-indigo-400 tracking-wider">System Design & Topology</span>
+      <h2 class="text-3xl md:text-4xl font-bold text-white">Distributed Polyglot Architecture</h2>
+      <p class="text-slate-400 text-sm max-w-2xl mx-auto">Integrated via Nginx API Gateway with dual WebSocket/REST routing, isolated database pooling, and asynchronous queues.</p>
+    </div>
+
+    <!-- HLD Visual Container -->
+    <div class="glass-card glass-glow p-8 rounded-3xl border-slate-800 space-y-8">
+      <!-- Gateway Level -->
+      <div class="max-w-md mx-auto p-4 rounded-2xl bg-indigo-950/60 border border-indigo-500/50 text-center space-y-1 shadow-lg">
+        <div class="flex items-center justify-center gap-2 text-indigo-300 font-bold text-sm">
+          <i data-lucide="network" class="w-4 h-4"></i>
+          <span>Nginx Reverse Proxy & API Gateway (Port 80)</span>
+        </div>
+        <p class="text-[11px] text-slate-400">SSL Termination, WebSocket Upgrade (WSS), REST Routing, 15MB Upload Buffers</p>
+      </div>
+
+      <!-- Connector Lines -->
+      <div class="w-1 h-6 bg-indigo-500/50 mx-auto"></div>
+
+      <!-- Microservices Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Service 1 -->
+        <div class="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 neon-border transition space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-indigo-400">:8001</span>
+            <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono">NestJS 10</span>
+          </div>
+          <h3 class="font-bold text-white text-base">Job & Auth Service</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">RBAC authentication, job requisitions, 10-minute waiting room verification, and F2F appointment dispatching.</p>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 neon-border transition space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-emerald-400">:8002</span>
+            <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono">FastAPI</span>
+          </div>
+          <h3 class="font-bold text-white text-base">ATS Screening Engine</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">In-memory PyMuPDF PDF extraction, Groq LLM semantic fit evaluation, and Zero-Junk database gatekeeping.</p>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 neon-border transition space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-purple-400">:8003</span>
+            <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono">FastAPI</span>
+          </div>
+          <h3 class="font-bold text-white text-base">Dynamic Assessment</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Psychometric multi-set MCQ generator, 45s per-question timer enforcement, and automated unqualified candidate purging.</p>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 neon-border transition space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-pink-400">:8004</span>
+            <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono">WebSockets</span>
+          </div>
+          <h3 class="font-bold text-white text-base">AI Voice Interviewer</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Bidirectional audio streaming, Groq Whisper-v3 STT transcription, Web Speech TTS, and Executive Scorecard grading.</p>
+        </div>
+      </div>
+
+      <!-- Connector Lines -->
+      <div class="w-1 h-6 bg-slate-700 mx-auto"></div>
+
+      <!-- Persistence Layer -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+        <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center space-y-1">
+          <div class="text-sm font-bold text-blue-400 flex items-center justify-center gap-1.5">
+            <i data-lucide="database" class="w-4 h-4"></i> PostgreSQL 15 Database
+          </div>
+          <p class="text-[11px] text-slate-500">Prisma ORM & Async SQLAlchemy 2.0 (asyncpg)</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center space-y-1">
+          <div class="text-sm font-bold text-rose-400 flex items-center justify-center gap-1.5">
+            <i data-lucide="layers" class="w-4 h-4"></i> Redis 7 Message Broker
+          </div>
+          <p class="text-[11px] text-slate-500">BullMQ Queues & In-Memory Session Caching</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Pipeline Walkthrough -->
+  <section id="pipeline" class="relative z-10 py-20 px-6 max-w-7xl mx-auto">
+    <div class="text-center space-y-2 mb-12">
+      <span class="text-xs uppercase font-extrabold text-emerald-400 tracking-wider">Live System Simulation</span>
+      <h2 class="text-3xl md:text-4xl font-bold text-white">Experience the 4-Stage Candidate Journey</h2>
+      <p class="text-slate-400 text-sm max-w-2xl mx-auto">Click through each pipeline phase below to see real-time simulated AI evaluation and telemetry.</p>
+    </div>
+
+    <!-- Step Selector Tabs -->
+    <div class="flex flex-wrap justify-center gap-2 mb-8" id="stepTabs">
+      <button onclick="switchStep(1)" id="tab-1" class="px-5 py-2.5 rounded-xl font-bold text-xs transition border flex items-center gap-2 bg-indigo-600 text-white border-indigo-500 shadow-md">
+        <span>1. ATS Semantic Screening</span>
+      </button>
+      <button onclick="switchStep(2)" id="tab-2" class="px-5 py-2.5 rounded-xl font-bold text-xs transition border flex items-center gap-2 bg-slate-900 text-slate-400 border-slate-800 hover:text-white">
+        <span>2. Timed Assessment Room</span>
+      </button>
+      <button onclick="switchStep(3)" id="tab-3" class="px-5 py-2.5 rounded-xl font-bold text-xs transition border flex items-center gap-2 bg-slate-900 text-slate-400 border-slate-800 hover:text-white">
+        <span>3. Autonomous Voice Interview</span>
+      </button>
+      <button onclick="switchStep(4)" id="tab-4" class="px-5 py-2.5 rounded-xl font-bold text-xs transition border flex items-center gap-2 bg-slate-900 text-slate-400 border-slate-800 hover:text-white">
+        <span>4. HR Console & Final F2F</span>
+      </button>
+    </div>
+
+    <!-- Dynamic Showcase Stage -->
+    <div class="glass-card p-6 md:p-8 rounded-3xl border-slate-800 min-h-[500px] flex items-center justify-center">
+
+      <!-- STEP 1: ATS Screening Demo -->
+      <div id="step-content-1" class="w-full max-w-3xl space-y-6">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white">In-Memory Semantic Match Engine</h3>
+            <p class="text-xs text-slate-400">Simulating PyMuPDF Extraction & Groq LLM Evaluation</p>
+          </div>
+          <span class="px-3 py-1 bg-emerald-950 text-emerald-400 border border-emerald-800 rounded-full font-mono text-xs font-bold">
+            Zero-Junk Policy Active
+          </span>
+        </div>
+
+        <div class="relative bg-slate-950 border border-slate-800 p-6 rounded-2xl overflow-hidden space-y-4">
+          <!-- Laser animation -->
+          <div class="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-indigo-500 to-transparent animate-laser"></div>
+
+          <div class="flex items-center gap-4">
+            <div class="p-3 bg-indigo-950/80 rounded-xl border border-indigo-800 text-indigo-400">
+              <i data-lucide="file-check-2" class="w-8 h-8"></i>
+            </div>
+            <div>
+              <div class="font-bold text-white text-base">Candidate: Md Mazidul Islam</div>
+              <div class="text-xs text-slate-400">Uploaded: <span class="font-mono text-indigo-300">Resume_MLOps_Engineer.pdf</span></div>
+            </div>
+            <div class="ml-auto text-right">
+              <div class="text-3xl font-extrabold font-mono text-emerald-400">83.5%</div>
+              <div class="text-[10px] text-slate-500 uppercase font-semibold">Matched Score</div>
+            </div>
+          </div>
+
+          <div class="bg-indigo-950/30 border border-indigo-900/40 p-4 rounded-xl text-xs space-y-1.5">
+            <span class="font-bold uppercase text-indigo-300 flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Qualitative AI Summary
+            </span>
+            <p class="text-slate-300 leading-relaxed">
+              Candidate exhibits deep competencies in containerized distributed pipelines (Docker, FastAPI, Redis, MLOps), matching 83.5% of Job Description criteria. High structural clarity and relevant project scope.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-2 pt-2">
+            <span class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-800 px-2.5 py-1 rounded-lg">✓ Docker & MLOps</span>
+            <span class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-800 px-2.5 py-1 rounded-lg">✓ FastAPI Microservices</span>
+            <span class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-800 px-2.5 py-1 rounded-lg">✓ Redis Queue Streaming</span>
+            <span class="text-xs bg-rose-950 text-rose-300 border border-rose-800 px-2.5 py-1 rounded-lg">✗ Kubernetes Terraform (Desired)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: Timed Assessment Demo -->
+      <div id="step-content-2" class="hidden w-full max-w-3xl space-y-6">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white">Timed Anti-Cheat Assessment Waiting Room</h3>
+            <p class="text-xs text-slate-400">Eliminating flash crowds via 10-minute early queue state-machine</p>
+          </div>
+          <span class="px-3 py-1 bg-amber-950 text-amber-400 border border-amber-800 rounded-full font-mono text-xs font-bold">
+            10-Minute Lock Rule
+          </span>
+        </div>
+
+        <div class="bg-slate-950 border border-slate-800 p-6 rounded-2xl text-center space-y-5">
+          <div class="w-16 h-16 rounded-full bg-indigo-950 border border-indigo-800 flex items-center justify-center mx-auto text-indigo-400">
+            <i data-lucide="lock" class="w-8 h-8"></i>
+          </div>
+
+          <div class="space-y-1">
+            <h4 class="text-xl font-bold text-white">Welcome, Candidate!</h4>
+            <p class="text-xs text-slate-400">You are securely connected to the waiting room with temporary key: <span class="font-mono font-bold text-indigo-400 bg-indigo-950 px-2 py-0.5 rounded">EX98K4</span></p>
+          </div>
+
+          <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl inline-block w-64 mx-auto">
+            <span class="text-[10px] uppercase text-slate-500 font-bold block mb-1">Time until unlock</span>
+            <div class="text-3xl font-mono font-bold text-indigo-400 animate-pulse">03m 48s</div>
+          </div>
+
+          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 text-xs text-slate-400 max-w-md mx-auto">
+            ⚡ <strong>Zero Server Spike:</strong> Test interface unlocks purely in client state at 00:00 without triggering simultaneous database queries.
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: Voice AI Interview Demo -->
+      <div id="step-content-3" class="hidden w-full max-w-3xl space-y-6">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white">Live AI Voice Interviewer & Evaluator</h3>
+            <p class="text-xs text-slate-400">WebSockets + Groq Whisper-v3 STT + Web Speech Audio Output</p>
+          </div>
+          <span class="px-3 py-1 bg-rose-950 text-rose-400 border border-rose-800 rounded-full font-mono text-xs font-bold animate-pulse">
+            Live Stream
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Visual Webcam Mock -->
+          <div class="relative bg-slate-950 rounded-2xl border border-slate-800 aspect-video flex flex-col items-center justify-center overflow-hidden p-4">
+            <div class="absolute top-3 left-3 bg-rose-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+              <span>WEBCAM & AUDIO STREAMING</span>
+            </div>
+            <i data-lucide="user" class="w-16 h-16 text-slate-700"></i>
+            <div class="mt-4 flex items-center gap-1">
+              <span class="w-1 h-3 bg-indigo-500 animate-pulse"></span>
+              <span class="w-1 h-6 bg-indigo-500 animate-pulse delay-75"></span>
+              <span class="w-1 h-8 bg-indigo-500 animate-pulse delay-150"></span>
+              <span class="w-1 h-4 bg-indigo-500 animate-pulse delay-100"></span>
+              <span class="text-xs font-mono text-indigo-400 ml-2">Whisper-v3 Transcribing</span>
+            </div>
+          </div>
+
+          <!-- Question & Scorecard Mock -->
+          <div class="bg-slate-950 rounded-2xl border border-slate-800 p-4 space-y-3 text-xs flex flex-col justify-between">
+            <div class="space-y-2">
+              <div class="text-[10px] uppercase font-bold text-indigo-400 flex items-center gap-1">
+                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                <span>AI Interviewer Vocalizing:</span>
+              </div>
+              <p class="text-white font-medium p-2.5 bg-slate-900 rounded-lg border border-slate-800 italic">
+                "Tell us about a time you had to integrate an ML model into a production microservice. What latency bottlenecks did you encounter?"
+              </p>
+            </div>
+
+            <!-- Scorecard Metrics -->
+            <div class="grid grid-cols-3 gap-2 text-center pt-2 border-t border-slate-800">
+              <div class="p-2 bg-slate-900 rounded-lg">
+                <div class="font-bold text-indigo-400 text-sm">88%</div>
+                <div class="text-[9px] text-slate-500 uppercase">Technical</div>
+              </div>
+              <div class="p-2 bg-slate-900 rounded-lg">
+                <div class="font-bold text-indigo-400 text-sm">85%</div>
+                <div class="text-[9px] text-slate-500 uppercase">Communication</div>
+              </div>
+              <div class="p-2 bg-slate-900 rounded-lg">
+                <div class="font-bold text-emerald-400 text-sm">86%</div>
+                <div class="text-[9px] text-slate-500 uppercase">Overall</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4: HR Console & F2F Demo -->
+      <div id="step-content-4" class="hidden w-full max-w-3xl space-y-6">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white">HR Console & Final F2F Appointment Letter</h3>
+            <p class="text-xs text-slate-400">1-Click in-person or Google Meet appointment email generator</p>
+          </div>
+          <span class="px-3 py-1 bg-purple-950 text-purple-300 border border-purple-800 rounded-full font-mono text-xs font-bold">
+            F2F Final Round
+          </span>
+        </div>
+
+        <div class="bg-slate-950 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="flex items-center justify-between p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold">
+                MI
+              </div>
+              <div>
+                <div class="font-bold text-white">Md Mazidul Islam</div>
+                <div class="text-slate-400 text-[11px]">Score: 86% • HIGHLY_RECOMMENDED</div>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 rounded-md bg-purple-950 text-purple-300 border border-purple-800 font-bold text-[10px]">
+              SELECTED_FOR_F2F
+            </span>
+          </div>
+
+          <!-- Email Preview -->
+          <div class="p-4 bg-white text-slate-900 rounded-xl space-y-2 text-xs shadow-lg">
+            <div class="font-bold text-indigo-600 text-sm border-b pb-1.5 flex items-center justify-between">
+              <span>🎉 Final Face-to-Face Interview Invitation</span>
+              <span class="text-[10px] text-slate-500 font-normal">Sent via SMTP</span>
+            </div>
+            <p>Dear <strong>Md Mazidul Islam</strong>,</p>
+            <p class="text-slate-600 leading-relaxed">
+              Congratulations! Based on your outstanding performance in our ATS Screening, Technical Assessment, and AI Voice Interview, you are officially invited to the <strong>Face-to-Face Executive Round</strong>.
+            </p>
+            <div class="p-2.5 bg-slate-100 rounded border border-slate-200 text-[11px] font-mono space-y-0.5">
+              <div>📅 <strong>Date:</strong> Monday, Nov 15, 2026 at 11:00 AM</div>
+              <div>🏢 <strong>Mode:</strong> In-Person (Corporate HQ, Silicon Tower)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- System Design Deep-Dive -->
+  <section id="engineering" class="relative z-10 py-20 px-6 max-w-7xl mx-auto border-t border-slate-900">
+    <div class="text-center space-y-2 mb-12">
+      <span class="text-xs uppercase font-extrabold text-indigo-400 tracking-wider">Engineering Deep-Dive</span>
+      <h2 class="text-3xl md:text-4xl font-bold text-white">Key Architectural Challenges Solved</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="glass-card p-6 rounded-2xl border-slate-800 space-y-3">
+        <div class="p-3 bg-indigo-950/80 rounded-xl border border-indigo-800 text-indigo-400 w-max">
+          <i data-lucide="zap" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">Thundering Herd Prevention</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Avoided catastrophic database lockups during concurrent exam starts by staggering applicant arrivals into a 10-minute queue, shifting unlocking logic into browser client state.
+        </p>
+      </div>
+
+      <div class="glass-card p-6 rounded-2xl border-slate-800 space-y-3">
+        <div class="p-3 bg-emerald-950/80 rounded-xl border border-emerald-800 text-emerald-400 w-max">
+          <i data-lucide="shield-alert" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">Zero-Junk Retention Policy</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Unqualified applicants (< 75%) are evaluated and rejected purely in-memory using PyMuPDF and Groq. Zero disk or persistent database writes occur, cutting cloud costs by 80%.
+        </p>
+      </div>
+
+      <div class="glass-card p-6 rounded-2xl border-slate-800 space-y-3">
+        <div class="p-3 bg-purple-950/80 rounded-xl border border-purple-800 text-purple-400 w-max">
+          <i data-lucide="refresh-cw" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">GDPR Cascading Purge</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Implemented verified one-click hard purging using PostgreSQL <code class="text-indigo-300">ON DELETE CASCADE</code>, permanently wiping transient audio, transcripts, and telemetry post-hire.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack Grid -->
+  <section id="tech-stack" class="relative z-10 py-20 px-6 max-w-7xl mx-auto border-t border-slate-900">
+    <div class="text-center space-y-2 mb-12">
+      <span class="text-xs uppercase font-extrabold text-purple-400 tracking-wider">Technology Matrix</span>
+      <h2 class="text-3xl md:text-4xl font-bold text-white">Built with Modern High-Performance Tools</h2>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto text-xs font-semibold">
+      <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-white">NestJS 10</span>
+      <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-white">FastAPI</span>
+      <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-white">Next.js 14 (App Router)</span>
+      <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-white">Python 3.11</span>
+      <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-white">TypeScript</span>
+      <span class="px-4 py-2 bg-indigo-950 border border-indigo-700 rounded-xl text-indigo-300">Groq LPU Engine</span>
+      <span class="px-4 py-2 bg-indigo-950 border border-indigo-700 rounded-xl text-indigo-300">Whisper-Large-v3</span>
+      <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-white">PostgreSQL 15</span>
+      <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-white">Prisma ORM</span>
+      <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-white">Async SQLAlchemy</span>
+      <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-white">Redis 7</span>
+      <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-white">WebSockets</span>
+      <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-white">Nginx Gateway</span>
+      <span class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-white">Docker Compose</span>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="relative z-10 border-t border-slate-900 py-10 px-6 text-center text-xs text-slate-500 space-y-2">
+    <div>Autonomous Agentic HR Ecosystem • Engineered by <strong>Md Mazidul Islam</strong></div>
+    <div>Demonstrating High-Concurrency Distributed Architecture, Microservices & Multimodal AI</div>
+  </footer>
+
+  <!-- Interactive Scripts -->
+  <script>
+    lucide.createIcons();
+
+    function switchStep(stepNum) {
+      // Hide all contents
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`step-content-${i}`).classList.add('hidden');
+        const tab = document.getElementById(`tab-${i}`);
+        tab.className = "px-5 py-2.5 rounded-xl font-bold text-xs transition border flex items-center gap-2 bg-slate-900 text-slate-400 border-slate-800 hover:text-white";
+      }
+
+      // Show selected
+      document.getElementById(`step-content-${stepNum}`).classList.remove('hidden');
+      const activeTab = document.getElementById(`tab-${stepNum}`);
+      activeTab.className = "px-5 py-2.5 rounded-xl font-bold text-xs transition border flex items-center gap-2 bg-indigo-600 text-white border-indigo-500 shadow-md";
+    }
+  </script>
+</body>
+</html>
