@@ -1,0 +1,153 @@
+version: '3.8'
+
+networks:
+  hr-agentic-network:
+    driver: bridge
+
+volumes:
+  pgdata:
+  redisdata:
+
+services:
+  # Infrastructure: PostgreSQL Database
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: hr-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: hr_admin
+      POSTGRES_PASSWORD: hr_secure_password
+      POSTGRES_DB: agentic_hr_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - hr-agentic-network
+
+  # Infrastructure: Redis Message Broker
+  redis-broker:
+    image: redis:7-alpine
+    container_name: hr-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    networks:
+      - hr-agentic-network
+
+  # Core Service: NestJS Job & Authentication
+  job-auth-service:
+    build:
+      context: ./services/job-auth-service
+      dockerfile: Dockerfile
+    container_name: job-auth-service
+    restart: always
+    environment:
+      SMTP_EMAIL: ${SMTP_EMAIL}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      DATABASE_URL: "postgresql://hr_admin:hr_secure_password@postgres-db:5432/agentic_hr_db?schema=public"
+      REDIS_HOST: redis-broker
+      REDIS_PORT: 6379
+      JWT_SECRET: ${JWT_SECRET:-super-secret-jwt-key-agentic-hr-2026}
+    depends_on:
+      - postgres-db
+      - redis-broker
+    networks:
+      - hr-agentic-network
+
+  # AI Service: ATS Resume Screening
+  ats-screening-service:
+    build:
+      context: ./services/ats-screening-service
+      dockerfile: Dockerfile
+    container_name: ats-screening-service
+    restart: always
+    environment:
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      DATABASE_URL: "postgresql://hr_admin:hr_secure_password@postgres-db:5432/agentic_hr_db?schema=public"
+    depends_on:
+      - postgres-db
+    networks:
+      - hr-agentic-network
+
+  # AI Service: Dynamic Assessment & Exam Engine
+  assessment-service:
+    build:
+      context: ./services/assessment-service
+      dockerfile: Dockerfile
+    container_name: assessment-service
+    restart: always
+    environment:
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      DATABASE_URL: "postgresql://hr_admin:hr_secure_password@postgres-db:5432/agentic_hr_db?schema=public"
+    depends_on:
+      - postgres-db
+    networks:
+      - hr-agentic-network
+
+  # AI Service: Live Video/Audio Interviewer
+  ai-interview-service:
+    build:
+      context: ./services/ai-interview-service
+      dockerfile: Dockerfile
+    container_name: ai-interview-service
+    restart: always
+    environment:
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      DATABASE_URL: "postgresql://hr_admin:hr_secure_password@postgres-db:5432/agentic_hr_db?schema=public"
+    depends_on:
+      - postgres-db
+    networks:
+      - hr-agentic-network
+
+  # Worker Service: Cron Watcher & Email Queue
+  notification-worker-service:
+    build:
+      context: ./services/notification-worker-service
+      dockerfile: Dockerfile
+    container_name: notification-worker-service
+    restart: always
+    environment:
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      DATABASE_URL: "postgresql://hr_admin:hr_secure_password@postgres-db:5432/agentic_hr_db?schema=public"
+      REDIS_HOST: redis-broker
+      REDIS_PORT: 6379
+      RESEND_API_KEY: ${RESEND_API_KEY}
+    depends_on:
+      - postgres-db
+      - redis-broker
+    networks:
+      - hr-agentic-network
+
+  # Fullstack Web Client
+  web-frontend:
+    build:
+      context: ./web-frontend
+      dockerfile: Dockerfile
+    container_name: web-frontend
+    restart: always
+    environment:
+      NEXT_PUBLIC_API_URL: "http://localhost/api/v1"
+    networks:
+      - hr-agentic-network
+
+  # API Gateway & Reverse Proxy
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - job-auth-service
+      - ats-screening-service
+      - assessment-service
+      - ai-interview-service
+      - web-frontend
+    networks:
+      - hr-agentic-network
