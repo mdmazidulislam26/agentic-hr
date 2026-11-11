@@ -1,0 +1,215 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+enum Role {
+  HR_ADMIN
+  RECRUITER
+}
+
+enum JobStatus {
+  DRAFT
+  ACTIVE
+  DEADLINE_REACHED
+  SHORTLISTING_COMPLETED
+  ASSESSMENT_PHASE
+  INTERVIEW_PHASE
+  COMPLETED
+  PURGED
+}
+
+enum CandidateStatus {
+  ATS_QUALIFIED
+  SHORTLISTED
+  EXAM_INVITED
+  EXAM_PASSED
+  EXAM_FAILED
+  EXAM_ABSENT
+  SLOT_BOOKING_PENDING
+  INTERVIEW_SCHEDULED
+  INTERVIEW_COMPLETED
+  SELECTED_FOR_F2F
+  REJECTED
+}
+
+enum AssessmentSource {
+  HR_PROVIDED
+  AI_GENERATED
+}
+
+enum DifficultyLevel {
+  EASY
+  MEDIUM
+  HARD
+  MIXED
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  companyName  String
+  role         Role      @default(RECRUITER)
+  jobs         JobPost[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model JobPost {
+  id                     String                 @id @default(uuid())
+  hrId                   String
+  hr                     User                   @relation(fields: [hrId], references: [id], onDelete: Cascade)
+  
+  title                  String
+  department             String
+  jobDescription         String                 @db.Text
+  requirements           String                 @db.Text
+  minAtsScoreThreshold   Float                  @default(75.0)
+  deadline               DateTime
+  status                 JobStatus              @default(ACTIVE)
+
+  predictedCutoffX       Float?
+  finalCutoffApplied     Float?
+  
+  hasAttitudeRound       Boolean                @default(false)
+  skipAssessmentAtStart  Boolean                @default(false)
+
+  interviewStartDate     DateTime?
+  interviewEndDate       DateTime?
+  slotDurationMinutes    Int                    @default(15)
+  customHrQuestions      String[]               @default([])
+
+  applications           CandidateApplication[]
+  assessmentConfig       AssessmentConfig?
+  interviewSlots         InterviewSlot[]
+
+  createdAt              DateTime               @default(now())
+  updatedAt              DateTime               @updatedAt
+
+  @@index([status, deadline])
+}
+
+model CandidateApplication {
+  id                  String                @id @default(uuid())
+  jobId               String
+  job                 JobPost               @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  fullName            String
+  email               String
+  phoneNumber         String
+  resumeUrl           String
+  resumeTextExtracted String                @db.Text
+
+  atsScore            Float
+  atsMatchSummary     String?               @db.Text
+  matchedSkills       String[]              @default([])
+  missingSkills       String[]              @default([])
+
+  status              CandidateStatus       @default(ATS_QUALIFIED)
+  examPassword        String?               // Temporary 6-character exam password
+  examRoomActive      Boolean               @default(false)
+
+  examResult          CandidateExamResult?
+  interviewSlot       InterviewSlot?
+  interviewEvaluation InterviewEvaluation?
+
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+
+  @@unique([jobId, email])
+  @@index([jobId, status, atsScore])
+}
+
+model AssessmentConfig {
+  id              String               @id @default(uuid())
+  jobId           String               @unique
+  job             JobPost              @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  source          AssessmentSource     @default(AI_GENERATED)
+  topics          String[]             @default([])
+  totalQuestions  Int                  @default(10)
+  difficulty      DifficultyLevel      @default(MEDIUM)
+  numberOfSets    Int                  @default(1)
+  passMarks       Float                @default(60.0)
+  examDate        DateTime?
+  durationMinutes Int                  @default(30)
+
+  questions       AssessmentQuestion[]
+  createdAt       DateTime             @default(now())
+}
+
+model AssessmentQuestion {
+  id            String            @id @default(uuid())
+  configId      String
+  config        AssessmentConfig  @relation(fields: [configId], references: [id], onDelete: Cascade)
+
+  setIdentifier String            @default("A")
+  questionText  String            @db.Text
+  options       Json
+  correctOption Int
+  timeLimitSec  Int               @default(60)
+  explanation   String?           @db.Text
+}
+
+model CandidateExamResult {
+  id              String               @id @default(uuid())
+  applicationId   String               @unique
+  application     CandidateApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  totalQuestions  Int
+  correctAnswers  Int
+  obtainedScore   Float
+  isPassed        Boolean
+  isAttended      Boolean              @default(true)
+  answersPayload  Json?
+  submittedAt     DateTime             @default(now())
+
+  @@index([isPassed, isAttended])
+}
+
+model InterviewSlot {
+  id            String                @id @default(uuid())
+  jobId         String
+  job           JobPost               @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  candidateId   String?               @unique
+  candidate     CandidateApplication? @relation(fields: [candidateId], references: [id], onDelete: SetNull)
+
+  startTime     DateTime
+  endTime       DateTime
+  isBooked      Boolean               @default(false)
+
+  createdAt     DateTime              @default(now())
+
+  @@index([jobId, isBooked, startTime])
+}
+
+model InterviewEvaluation {
+  id                 String                @id @default(uuid())
+  applicationId      String                @unique
+  application        CandidateApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  recordingVideoUrl  String?
+  fullTranscript     String?               @db.Text
+
+  technicalScore     Float
+  communicationScore Float
+  behavioralScore    Float
+  overallScore       Float
+  
+  strengthsSummary   String?               @db.Text
+  weaknessesSummary  String?               @db.Text
+  aiRecommendation   String?               @db.Text
+  
+  f2fSelectedByHr    Boolean               @default(false)
+  evaluatedAt        DateTime              @default(now())
+
+  @@index([overallScore, f2fSelectedByHr])
+}
